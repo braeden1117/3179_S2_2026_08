@@ -1,0 +1,66 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 400,
+  "config": { "font": "Open Sans" },
+  "title": {
+    "text": "Public library branches by state, 2023–24",
+    "color": "#874500"
+  },
+  "view": { "stroke": null },
+  "projection": { "type": "conicEqualArea", "parallels": [-18, -36], "rotate": [-132, 0] },
+  "layer": [
+    {
+      "data": {
+        "url": "data/australia_states.json",
+        "format": { "type": "topojson", "feature": "STE_2021_AUST_GDA2020" }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.STE_NAME21 != 'Other Territories' && datum.properties.STE_NAME21 != 'Outside Australia'"
+        }
+      ],
+      "mark": { "type": "geoshape", "fill": "#e8e2d9", "stroke": "white", "strokeWidth": 1 }
+    },
+    {
+      "data": { "url": "data/au_libraries_2023_24.csv" },
+      "mark": {
+        "type": "point",
+        "shape": "M-1,-0.7 L-0.06,-0.5 L-0.06,0.9 L-1,0.7 Z M0.06,-0.5 L1,-0.7 L1,0.7 L0.06,0.9 Z",
+        "filled": true,
+        "color": "#874500",
+        "opacity": 0.85,
+        "stroke": "white",
+        "strokeWidth": 0.5
+      },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "size": {
+          "field": "branches",
+          "type": "quantitative",
+          "title": "Library branches",
+          "scale": { "range": [0, 2500] },
+          "legend": { "values": [50, 150, 300] }
+        },
+        "tooltip": [
+          { "field": "state", "title": "State" },
+          { "field": "branches", "type": "quantitative", "title": "Library branches" },
+          { "field": "total_outlets", "type": "quantitative", "title": "All outlets (incl. mobile)" }
+        ]
+      }
+    },
+    {
+      "data": { "url": "data/au_libraries_2023_24.csv" },
+      "transform": [
+        { "calculate": "datum.abbr + ' ' + datum.branches", "as": "label" }
+      ],
+      "mark": { "type": "text", "dy": 30, "fontSize": 11, "fontWeight": "bold", "color": "#2b1600" },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "label" }
+      }
+    }
+  ]
+}

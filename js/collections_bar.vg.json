@@ -1,0 +1,57 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 300,
+  "config": { "font": "Open Sans" },
+  "title": {
+    "text": "Public library collections, 2019–20 to 2023–24",
+    "color": "#874500"
+  },
+  "data": {
+    "url": "data/au_collections_2019_2024.csv",
+    "format": { "parse": { "physical_items": "number", "digital_items": "number" } }
+  },
+  "transform": [
+    { "calculate": "datum.physical_items + datum.digital_items", "as": "total_items" },
+    { "calculate": "datum.digital_items / datum.total_items", "as": "digital_share" }
+  ],
+  "layer": [
+    {
+      "transform": [
+        { "fold": ["physical_items", "digital_items"], "as": ["format", "items"] },
+        { "calculate": "datum.format == 'physical_items' ? 'Physical' : 'Digital (ebooks, audiobooks)'", "as": "Format" },
+        { "calculate": "datum.items / 1000000", "as": "items_m" }
+      ],
+      "mark": { "type": "bar", "width": { "band": 0.6 } },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal", "title": null, "axis": { "labelAngle": 0 } },
+        "y": { "field": "items_m", "type": "quantitative", "title": "Collection items (millions)" },
+        "color": {
+          "field": "Format",
+          "type": "nominal",
+          "title": null,
+          "scale": { "domain": ["Physical", "Digital (ebooks, audiobooks)"], "range": ["#d4b08c", "#874500"] },
+          "legend": { "orient": "top" }
+        },
+        "order": { "field": "format", "sort": "descending" },
+        "tooltip": [
+          { "field": "year", "title": "Year" },
+          { "field": "Format" },
+          { "field": "items", "type": "quantitative", "title": "Items", "format": "," }
+        ]
+      }
+    },
+    {
+      "transform": [
+        { "calculate": "datum.total_items / 1000000", "as": "total_m" },
+        { "calculate": "format(datum.digital_share, '.0%') + ' digital'", "as": "label" }
+      ],
+      "mark": { "type": "text", "dy": -10, "fontSize": 11, "color": "#2b1600" },
+      "encoding": {
+        "x": { "field": "year", "type": "ordinal" },
+        "y": { "field": "total_m", "type": "quantitative" },
+        "text": { "field": "label" }
+      }
+    }
+  ]
+}

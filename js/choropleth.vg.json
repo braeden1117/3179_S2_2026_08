@@ -1,7 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "width": 500,
+  "width": "container",
   "height": 400,
+  "config": { "font": "Open Sans" },
   "view": { "stroke": null },
   "title": {
     "text": "Library loans per person, 2023–24",

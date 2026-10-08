@@ -1,9 +1,9 @@
-state,abbr,loans_per_person,physical_loans_m,digital_loans_m,visits_m
-Australian Capital Territory,ACT,5.5,1.53,1.05,1.46
-New South Wales,NSW,6,36.99,13.84,26.54
-Northern Territory,NT,3.7,0.65,0.3,0.76
-Queensland,QLD,7.8,25.64,15.76,17.02
-South Australia,SA,7.1,7.5,3.21,7.96
-Tasmania,Tas.,5.8,2.22,1.12,2.26
-Victoria,Vic.,6.6,33.51,11.92,22.3
-Western Australia,WA,5.5,10.73,5.49,8.58
+state,abbr,loans_per_person,physical_loans_m,digital_loans_m,visits_m,branches,total_outlets,lon,lat
+Australian Capital Territory,ACT,5.5,1.53,1.05,1.46,10,10,149.1,-35.3
+New South Wales,NSW,6,36.99,13.84,26.54,361,459,146.6,-32.2
+Northern Territory,NT,3.7,0.65,0.3,0.76,32,36,133.4,-19.8
+Queensland,QLD,7.8,25.64,15.76,17.02,304,343,144.5,-22.8
+South Australia,SA,7.1,7.5,3.21,7.96,135,166,135.3,-30.2
+Tasmania,Tas.,5.8,2.22,1.12,2.26,45,50,146.6,-42.1
+Victoria,Vic.,6.6,33.51,11.92,22.3,293,408,144.2,-36.9
+Western Australia,WA,5.5,10.73,5.49,8.58,233,245,121.5,-25.5
