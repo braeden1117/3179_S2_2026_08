@@ -17,7 +17,7 @@
   <!-- Google font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- CSS file -->
   <link rel="stylesheet" type="text/css" href="css/styles.css" media="all">
@@ -26,7 +26,24 @@
 
 <body>
   <div class="container">
-    <h1>Books & Public Libraries</h1>
+
+    <!-- Title row -->
+    <div class="pure-g">
+      <div class="pure-u-1-1">
+        <h1>Books & Public Libraries</h1>
+        <p>WRITE YOUR INTRO HERE: one or two sentences on what the page is about.</p>
+      </div>
+    </div>
+
+    <!-- Section 1 heading -->
+    <div class="pure-g">
+      <div class="pure-u-1-1">
+        <h2>Australia's shelves</h2>
+        <p>WRITE A SHORT LEAD-IN FOR THE TWO MAPS HERE.</p>
+      </div>
+    </div>
+
+    <!-- Two maps side by side -->
     <div class="pure-g">
       <div class="pure-u-1-2">
         <div id="au_choropleth" class="chart"></div>
@@ -35,20 +52,62 @@
         <div id="prop_symb_map" class="chart"></div>
       </div>
     </div>
-  
-<div class="pure-g">
-   <div class="pure-u-1-2">
-     <div id="collections_bar" class="chart"></div>
-   </div>
-   <div class="pure-u-1-2">
-     <p>Your insight sentence here…</p>
-   </div>
- </div>
+
+    <div class="pure-g">
+      <div class="pure-u-1-1">
+        <p>WRITE YOUR INSIGHT ABOUT THE TWO MAPS HERE.</p>
+      </div>
+    </div>
+
+
+
+    
+    <!-- Text left, chart right -->
+    <div class="pure-g">
+      <div class="pure-u-1-2">
+        <div class="description description-left">
+          <h2>Collections are going digital</h2>
+          <p>WRITE YOUR INSIGHT ABOUT CHART 3 HERE.</p>
+        </div>
+      </div>
+      <div class="pure-u-1-2">
+        <div id="collections_bar" class="chart"></div>
+      </div>
+    </div>
+
+
+
+    <!-- Section 2 heading -->
+    <div class="pure-g">
+      <div class="pure-u-1-1">
+        <h2>What's on the shelf</h2>
+        <p>WRITE A LEAD-IN FOR SECTION 2 HERE.</p>
+      </div>
+    </div>
+
+    <!-- Chart left, text right -->
+    <div class="pure-g">
+      <div class="pure-u-1-2">
+        <div id="genre_bar" class="chart"></div>
+      </div>
+      <div class="pure-u-1-2">
+        <div class="description description-right">
+          <h2>Fantasy leads the shelf</h2>
+          <p>WRITE YOUR INSIGHT ABOUT CHART 4 HERE.</p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+  </div> <!-- end container -->
 
   <script type="text/javascript">
     vegaEmbed("#au_choropleth", "js/choropleth.vg.json", { actions: false });
     vegaEmbed("#prop_symb_map", "js/prop_symb_map.vg.json", { actions: false });
     vegaEmbed("#collections_bar", "js/collections_bar.vg.json", { actions: false });
+    vegaEmbed("#genre_bar", "js/genre_bar.vg.json", { actions: false });
   </script>
 </body>
 

@@ -39,9 +39,9 @@
         "size": {
           "field": "branches",
           "type": "quantitative",
-          "title": "Library branches",
+          "title": "Number of Library Branches",
           "scale": { "range": [0, 2500] },
-          "legend": { "values": [50, 150, 300] }
+          "legend": { "values": [50, 150, 300], "orient": "bottom-left", "direction": "horizontal" }
         },
         "tooltip": [
           { "field": "state", "title": "State" },

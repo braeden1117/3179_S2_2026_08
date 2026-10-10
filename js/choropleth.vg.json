@@ -35,7 +35,8 @@
           "field": "loans_per_person",
           "type": "quantitative",
           "title": "Loans per person",
-          "scale": { "scheme": "browns" }
+          "scale": { "scheme": "browns" },
+          "legend": { "orient": "bottom-left", "direction": "horizontal", "gradientLength": 140 }
         },
         "tooltip": [
           { "field": "properties.STE_NAME21", "title": "State" },

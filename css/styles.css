@@ -1,26 +1,55 @@
-
+/* Page background and font */
 body {
   margin: 0;
   font-family: "Open Sans", sans-serif;
+  background-color: #ece8e3;
 }
 
+/* The white "sheet" in the middle of the page */
 .container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 35px 50px 50px;
+  background-color: white;
 }
 
+/* Headings */
 h1 {
   color: #874500;
-   text-align: center;
+  text-align: center;
+  margin-top: 0;
 }
 
+h2 {
+  color: #874500;
+  margin-top: 0;
+}
 
+/* Body text */
+p {
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Space between each row of the page */
+.pure-g {
+  margin-bottom: 40px;
+}
+
+/* Charts fill their column */
 .vega-embed {
   width: 100%;
 }
 
-
 .chart {
   padding: 0 20px;
+}
+
+/* Text columns next to a chart */
+.description-left {
+  padding-right: 20px;
+}
+
+.description-right {
+  padding-left: 20px;
 }

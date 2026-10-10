@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 320,
+  "autosize": { "type": "fit", "contains": "padding" },
+  "config": { "font": "Open Sans" },
+  "view": { "stroke": null },
+  "title": {
+    "text": "Genres among the 10,000 most-rated books",
+    "color": "#874500"
+  },
+  "data": { "url": "data/goodbooks_genres.csv" },
+  "transform": [
+    { "filter": "datum.genre != 'Other'" },
+    { "aggregate": [{ "op": "count", "as": "books" }], "groupby": ["genre"] }
+  ],
+  "encoding": {
+    "y": { "field": "genre", "type": "nominal", "title": null,
+           "sort": { "field": "books", "op": "max", "order": "descending" } },
+    "x": { "field": "books", "type": "quantitative", "title": "Number of books" }
+  },
+  "layer": [
+    {
+      "mark": { "type": "bar", "color": "#874500", "cornerRadiusEnd": 3 },
+      "encoding": {
+        "tooltip": [
+          { "field": "genre", "title": "Genre" },
+          { "field": "books", "type": "quantitative", "title": "Books", "format": "," }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "dx": 4, "fontSize": 11, "color": "#2b1600" },
+      "encoding": { "text": { "field": "books", "type": "quantitative", "format": "," } }
+    }
+  ]
+}
