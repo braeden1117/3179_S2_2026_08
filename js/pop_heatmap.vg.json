@@ -1,0 +1,127 @@
+
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 340,
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "config": {
+    "font": "Open Sans",
+    "view": { "stroke": null, "fill": "#faf7f3" }
+  },
+
+  "title": {
+    "text": "Popular is not the same as loved",
+    "subtitle": "10,000 books by number of ratings and average rating",
+    "color": "#874500",
+    "anchor": "middle"
+  },
+  "data": {
+    "url": "data/goodbooks_genres.csv",
+    "format": {
+      "parse": {
+        "average_rating": "number",
+        "ratings_count": "number"
+      }
+    }
+  },
+  "transform": [
+    {
+      "calculate": "log(datum.ratings_count) / LN10",
+      "as": "log_ratings"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "rect", "stroke": "white", "strokeWidth": 0.5 },
+      "encoding": {
+        "x": {
+          "field": "log_ratings",
+          "type": "quantitative",
+          "bin": { "step": 0.2, "extent": [3.6, 6.8] },
+          "title": "Number of ratings (each step is 10 times more)",
+          "axis": {
+            "values": [4, 5, 6],
+            "labelExpr": "datum.value == 4 ? '10,000' : datum.value == 5 ? '100,000' : '1 million'"
+          }
+        },
+        "y": {
+          "field": "average_rating",
+          "type": "quantitative",
+          "bin": { "step": 0.1, "extent": [2.4, 5] },
+          "title": "Average rating (stars)"
+        },
+        "color": {
+          "aggregate": "count",
+          "type": "quantitative",
+          "title": "Books",
+          "scale": { "scheme": "browns", "type": "sqrt" },
+          "legend": { "orient": "right", "gradientLength": 160 }
+        },
+        "tooltip": [
+          {
+            "aggregate": "count",
+            "type": "quantitative",
+            "title": "Books in this cell"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 4.461, "y": 4.82, "lx": 4.461, "ly": 4.97,
+            "label": "Calvin and Hobbes: 4.82★", "al": "left"
+          },
+          {
+            "x": 6.064, "y": 4.36, "lx": 6.45, "ly": 4.84,
+            "label": "The Book Thief: 4.36★", "al": "right"
+          },
+          {
+            "x": 6.587, "y": 3.57, "lx": 6.587, "ly": 3.12,
+            "label": "Twilight: 3.57★", "al": "right"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": { "type": "rule", "color": "#2b1600", "strokeWidth": 0.8 },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" },
+            "x2": { "field": "lx" },
+            "y2": { "field": "ly" }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "size": 60,
+            "color": "#2b1600",
+            "strokeWidth": 1.5
+          },
+          "encoding": {
+            "x": { "field": "x", "type": "quantitative" },
+            "y": { "field": "y", "type": "quantitative" }
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": { "expr": "datum.ly > 4 ? -4 : 12" },
+            "dx": { "expr": "datum.al == 'left' ? -6 : 6" },
+            "align": { "expr": "datum.al" },
+            "fontSize": 12,
+            "fontStyle": "italic",
+            "color": "#2b1600"
+          },
+          "encoding": {
+            "x": { "field": "lx", "type": "quantitative" },
+            "y": { "field": "ly", "type": "quantitative" },
+            "text": { "field": "label" }
+          }
+        }
+      ]
+    }
+  ]
+}

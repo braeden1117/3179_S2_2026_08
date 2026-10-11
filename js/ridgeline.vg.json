@@ -1,0 +1,48 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "config": { "font": "Open Sans", "view": { "stroke": null } },
+  "title": {
+    "text": "How readers rate each genre",
+    "color": "#874500"
+  },
+  "data": {
+    "url": "data/goodbooks_genres.csv",
+    "format": { "parse": { "average_rating": "number" } }
+  },
+  "transform": [
+    { "filter": "datum.genre != 'Other'" },
+    { "joinaggregate": [{ "op": "median", "field": "average_rating", "as": "median_rating" }], "groupby": ["genre"] },
+    { "density": "average_rating", "groupby": ["genre", "median_rating"], "extent": [3, 5], "as": ["rating", "density"] }
+  ],
+  "facet": {
+    "row": {
+      "field": "genre",
+      "title": null,
+      "sort": { "field": "median_rating", "op": "max", "order": "descending" },
+      "header": { "labelAngle": 0, "labelAlign": "left", "labelOrient": "left", "labelPadding": 105, "labelFontSize": 11 }
+    }
+  },
+  "spacing": -20,
+  "spec": {
+    "width": 350,
+    "height": 30,
+    "layer": [
+      {
+        "mark": { "type": "area", "interpolate": "monotone", "stroke": "white", "strokeWidth": 1, "fillOpacity": 0.9 },
+        "encoding": {
+          "x": { "field": "rating", "type": "quantitative", "title": "Average rating (stars)", "scale": { "domain": [3, 5] } },
+          "y": { "field": "density", "type": "quantitative", "axis": null, "scale": { "range": [30, -15] } },
+          "fill": { "field": "median_rating", "type": "quantitative", "legend": null, "scale": { "scheme": "browns" } },
+          "tooltip": [
+            { "field": "genre", "title": "Genre" },
+            { "field": "median_rating", "type": "quantitative", "title": "Typical (median) rating", "format": ".2f" }
+          ]
+        }
+      },
+      {
+        "mark": { "type": "rule", "strokeDash": [3, 3], "color": "#555" },
+        "encoding": { "x": { "datum": 4 } }
+      }
+    ]
+  }
+}

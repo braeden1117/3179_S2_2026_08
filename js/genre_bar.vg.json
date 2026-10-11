@@ -7,6 +7,7 @@
   "view": { "stroke": null },
   "title": {
     "text": "Genres among the 10,000 most-rated books",
+    "subtitle": "146 books (1.5%) outside these 11 genres are not shown",
     "color": "#874500"
   },
   "data": { "url": "data/goodbooks_genres.csv" },

@@ -1,0 +1,274 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 320,
+  "autosize": {
+    "type": "fit-x",
+    "contains": "padding"
+  },
+  "config": {
+    "font": "Open Sans",
+    "view": {
+      "stroke": null
+    }
+  },
+  "title": {
+    "text": "What Australians search for when looking for books",
+    "subtitle": "Google search interest, 2011\u20132026 (100 = busiest month)",
+    "color": "#874500",
+    "anchor": "middle"
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/au_trends_genres.csv",
+        "format": {
+          "parse": {
+            "month": "date",
+            "romance": "number",
+            "fantasy": "number",
+            "crime": "number",
+            "sci fi": "number",
+            "historical": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "year(datum.month) >= 2011"
+        },
+        {
+          "fold": [
+            "romance",
+            "fantasy",
+            "crime",
+            "sci fi",
+            "historical"
+          ],
+          "as": [
+            "term",
+            "interest"
+          ]
+        },
+        {
+          "calculate": "{'romance': 'Romance books', 'fantasy': 'Fantasy books', 'crime': 'Crime books', 'sci fi': 'Sci-fi books', 'historical': 'Historical fiction'}[datum.term]",
+          "as": "genre"
+        },
+        {
+          "window": [
+            {
+              "op": "mean",
+              "field": "interest",
+              "as": "rolling"
+            }
+          ],
+          "frame": [
+            -11,
+            0
+          ],
+          "groupby": [
+            "genre"
+          ],
+          "sort": [
+            {
+              "field": "month"
+            }
+          ]
+        }
+      ],
+      "layer": [
+        
+        {
+          "mark": {
+            "type": "line",
+            "strokeWidth": 2.8,
+            "interpolate": "monotone"
+          },
+          "encoding": {
+            "y": {
+              "field": "rolling",
+              "type": "quantitative",
+              "title": "Search interest (0\u2013100)",
+              "scale": {
+                "domain": [
+                  0,
+                  100
+                ]
+              }
+            },
+            "tooltip": [
+              {
+                "field": "genre",
+                "title": "Search"
+              },
+              {
+                "field": "month",
+                "type": "temporal",
+                "title": "Month",
+                "format": "%b %Y"
+              },
+              {
+                "field": "interest",
+                "type": "quantitative",
+                "title": "That month"
+              },
+              {
+                "field": "rolling",
+                "type": "quantitative",
+                "title": "12-month average",
+                "format": ".0f"
+              }
+            ],
+            "x": {
+              "field": "month",
+              "type": "temporal",
+              "title": null,
+              "axis": {
+                "format": "%Y",
+                "tickCount": 8
+              }
+            },
+            "color": {
+              "field": "genre",
+              "type": "nominal",
+              "title": null,
+              "scale": {
+                "domain": [
+                  "Romance books",
+                  "Fantasy books",
+                  "Crime books",
+                  "Historical fiction",
+                  "Sci-fi books"
+                ],
+                "range": [
+                  "#b5446e",
+                  "#874500",
+                  "#4d6275",
+                  "#7a9a5b",
+                  "#9fb0bf"
+                ]
+              },
+              "legend": {
+                "orient": "top",
+                "direction": "horizontal",
+                "columns": 3,
+                "symbolOpacity": 1,
+                "symbolStrokeWidth": 3
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "month": "2026-09-01",
+            "y": 81,
+            "note": "Romance searches doubled since 2019"
+          }
+        ],
+        "format": {
+          "parse": {
+            "month": "date"
+          }
+        }
+      },
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -8,
+        "fontSize": 11,
+        "fontStyle": "italic",
+        "color": "#2b1600"
+      },
+      "encoding": {
+        "x": {
+          "field": "month",
+          "type": "temporal"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        },
+        "color": {
+          "value": "#2b1600"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "month": "2022-01-01"
+          }
+        ],
+        "format": {
+          "parse": {
+            "month": "date"
+          }
+        }
+      },
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          3,
+          3
+        ],
+        "color": "#888"
+      },
+      "encoding": {
+        "x": {
+          "field": "month",
+          "type": "temporal"
+        },
+        "color": {
+          "value": "#888"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "month": "2022-01-01",
+            "y": 75,
+            "note": "Google data change"
+          }
+        ],
+        "format": {
+          "parse": {
+            "month": "date"
+          }
+        }
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 4,
+        "fontSize": 10,
+        "color": "#666"
+      },
+      "encoding": {
+        "x": {
+          "field": "month",
+          "type": "temporal"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        },
+        "color": {
+          "value": "#666"
+        }
+      }
+    }
+  ]
+}

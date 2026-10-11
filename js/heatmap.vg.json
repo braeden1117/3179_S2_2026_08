@@ -1,0 +1,110 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 360,
+  "autosize": { "type": "fit-x", "contains": "padding" },
+  "config": { "font": "Open Sans", "view": { "stroke": null } },
+  "title": {
+    "text": "Genre mix of popular books, by decade first published",
+    "subtitle": "Since 2000, fantasy and romance dominate; earlier decades were more varied",
+    "color": "#874500",
+    "anchor": "middle"
+  },
+  "data": {
+    "url": "data/goodbooks_genres.csv",
+    "format": {
+      "parse": { "original_publication_year": "number" }
+    }
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.original_publication_year) && datum.original_publication_year >= 1950"
+    },
+    { "filter": "datum.genre != 'Other'" },
+    {
+      "calculate": "floor(datum.original_publication_year / 10) * 10",
+      "as": "decade"
+    },
+    {
+      "aggregate": [{ "op": "count", "as": "books" }],
+      "groupby": ["decade", "genre"]
+    },
+    {
+      "impute": "books",
+      "key": "genre",
+      "groupby": ["decade"],
+      "value": 0
+    },
+    {
+      "joinaggregate": [
+        { "op": "sum", "field": "books", "as": "decade_total" }
+      ],
+      "groupby": ["decade"]
+    },
+    { "calculate": "datum.books / datum.decade_total", "as": "share" }
+  ],
+  "encoding": {
+    "x": {
+      "field": "decade",
+      "type": "ordinal",
+      "title": null,
+      "axis": {
+        "labelExpr": "datum.value + 's'",
+        "labelAngle": 0,
+        "orient": "top"
+      }
+    },
+    "y": {
+      "field": "genre",
+      "type": "nominal",
+      "title": null,
+        "sort": [
+     "Fantasy", "Romance", "Non-fiction", "Historical Fiction",
+     "Mystery", "Science Fiction", "Children's", "Thriller",
+     "Horror", "Graphic Novels", "Poetry"
+   ]
+    }
+  },
+  "layer": [
+    {
+      "mark": { "type": "rect", "stroke": "white", "strokeWidth": 1 },
+      "encoding": {
+        "color": {
+          "field": "share",
+          "type": "quantitative",
+          "title": "Share of the decade's books",
+          "scale": { "scheme": "browns", "domain": [0, 0.3] },
+       "legend": {
+         "title": "Share of the decade's books",
+         "format": "%",
+         "orient": "bottom",
+         "direction": "horizontal",
+         "gradientLength": 200
+       }
+        },
+        "tooltip": [
+          { "field": "decade", "title": "Decade" },
+          { "field": "genre", "title": "Genre" },
+          { "field": "books", "type": "quantitative", "title": "Books" },
+          {
+            "field": "share",
+            "type": "quantitative",
+            "title": "Share of decade",
+            "format": ".0%"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.share >= 0.1" }],
+      "mark": { "type": "text", "fontSize": 10 },
+      "encoding": {
+        "text": { "field": "share", "type": "quantitative", "format": ".0%" },
+        "color": {
+          "condition": { "test": "datum.share >= 0.2"},
+          "value": "#2b1600"
+        }
+      }
+    }
+  ]
+}
