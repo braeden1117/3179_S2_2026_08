@@ -1,0 +1,232 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Gantt chart: the lifespan of every Nobel Prize in Literature winner, in prize order, with the prize year marked",
+  "width": "container",
+  "height": 500,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "config": {
+    "font": "'Source Sans 3', sans-serif",
+    "view": {
+      "stroke": null
+    }
+  },
+  "title": {
+    "text": "The lives of all 123 Nobel Prize in Literature winners",
+    "subtitle": "Each bar runs from birth to death (or to today). The dark tick marks the year they won"
+  },
+  "data": {
+    "url": "data/nobel_literature.json",
+    "format": {
+      "type": "json",
+      "property": "laureates"
+    }
+  },
+  "transform": [
+    {
+      "calculate": "datum.knownName.en",
+      "as": "name"
+    },
+    {
+      "calculate": "toNumber(datum.nobelPrizes[0].awardYear)",
+      "as": "year"
+    },
+    {
+      "calculate": "toNumber(datum.birth.year)",
+      "as": "born"
+    },
+    {
+      "comment": "Living laureates have no death date, so their bar runs to 2026",
+      "calculate": "datum.death && datum.death.date ? toNumber(substring(datum.death.date, 0, 4)) : 2026",
+      "as": "end"
+    },
+    {
+      "calculate": "datum.death && datum.death.date ? 'Died ' + substring(datum.death.date, 0, 4) : 'Living'",
+      "as": "status"
+    },
+    {
+      "calculate": "datum.year - datum.born",
+      "as": "age"
+    },
+    {
+      "calculate": "datum.gender == 'female' ? 'Woman' : 'Man'",
+      "as": "gender_label"
+    },
+    {
+      "comment": "One row per laureate, in prize order (1901 at the top)",
+      "window": [
+        {
+          "op": "row_number",
+          "as": "order"
+        }
+      ],
+      "sort": [
+        {
+          "field": "year"
+        },
+        {
+          "field": "name"
+        }
+      ]
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "order",
+      "type": "ordinal",
+      "title": "Winners in prize order: 1901 at the top, 2026 at the bottom",
+      "axis": {
+        "labels": false,
+        "ticks": false,
+        "domain": false,
+        "titlePadding": 8
+      }
+    }
+  },
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "who",
+          "select": {
+            "type": "point",
+            "fields": [
+              "gender_label"
+            ]
+          },
+          "bind": "legend"
+        }
+      ],
+      "mark": {
+        "type": "bar",
+        "height": {
+          "band": 0.75
+        },
+        "cornerRadius": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "born",
+          "type": "quantitative",
+          "title": "Year",
+          "scale": {
+            "domain": [
+              1815,
+              2030
+            ],
+            "nice": false,
+            "zero": false
+          },
+          "axis": {
+            "format": "d",
+            "tickCount": 12
+          }
+        },
+        "x2": {
+          "field": "end"
+        },
+        "color": {
+          "field": "gender_label",
+          "type": "nominal",
+          "title": null,
+          "scale": {
+            "domain": [
+              "Woman",
+              "Man"
+            ],
+            "range": [
+              "#e4572e",
+              "#bdb6ad"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal"
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "who",
+            "value": 1
+          },
+          "value": 0.12
+        },
+        "tooltip": [
+          {
+            "field": "name",
+            "title": "Winner"
+          },
+          {
+            "field": "year",
+            "title": "Prize year"
+          },
+          {
+            "field": "born",
+            "title": "Born"
+          },
+          {
+            "field": "status",
+            "title": "Status"
+          },
+          {
+            "field": "age",
+            "title": "Age when they won"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "tick",
+        "thickness": 1.5,
+        "color": "#3d3630",
+        "bandSize": 5,
+        "opacity": 0.85
+      },
+      "encoding": {
+        "x": {
+          "field": "year",
+          "type": "quantitative"
+        },
+        "opacity": {
+          "condition": {
+            "param": "who",
+            "value": 1
+          },
+          "value": 0.15
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "indexof(['Rudyard Kipling', 'Doris Lessing', 'Anne Carson', 'Patrick White'], datum.name) >= 0"
+        },
+        {
+          "calculate": "datum.name == 'Rudyard Kipling' ? 'Rudyard Kipling: youngest winner, at 42' : datum.name == 'Doris Lessing' ? 'Doris Lessing: oldest winner, at 88' : datum.name == 'Patrick White' ? \"Patrick White: Australia's only winner (1973)\" : 'Anne Carson: 2026 winner'",
+          "as": "note"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -8,
+        "fontSize": 14,
+        "fontStyle": "italic",
+        "font": "Literata",
+        "color": "#2b2622"
+      },
+      "encoding": {
+        "x": {
+          "field": "born",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        }
+      }
+    }
+  ]
+}

@@ -1,22 +1,20 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
-  "height": 320,
+  "height": 500,
   "autosize": {
-    "type": "fit-x",
+    "type": "fit",
     "contains": "padding"
   },
   "config": {
-    "font": "Open Sans",
+    "font": "'Source Sans 3', sans-serif",
     "view": {
       "stroke": null
     }
   },
   "title": {
     "text": "What Australians search for when looking for books",
-    "subtitle": "Google search interest, 2011\u20132026 (100 = busiest month)",
-    "color": "#874500",
-    "anchor": "middle"
+    "subtitle": "Google search interest, 2011–2026 (100 = busiest month)"
   },
   "layer": [
     {
@@ -77,7 +75,6 @@
         }
       ],
       "layer": [
-        
         {
           "mark": {
             "type": "line",
@@ -88,7 +85,7 @@
             "y": {
               "field": "rolling",
               "type": "quantitative",
-              "title": "Search interest (0\u2013100)",
+              "title": "Search interest (0–100)",
               "scale": {
                 "domain": [
                   0,
@@ -141,11 +138,11 @@
                   "Sci-fi books"
                 ],
                 "range": [
-                  "#b5446e",
-                  "#874500",
-                  "#4d6275",
-                  "#7a9a5b",
-                  "#9fb0bf"
+                  "#d6457a",
+                  "#e3b100",
+                  "#6e6a66",
+                  "#9e9a96",
+                  "#c8c4c0"
                 ]
               },
               "legend": {
@@ -155,8 +152,27 @@
                 "symbolOpacity": 1,
                 "symbolStrokeWidth": 3
               }
+            },
+            "opacity": {
+              "condition": {
+                "param": "pick",
+                "value": 1
+              },
+              "value": 0.12
             }
-          }
+          },
+          "params": [
+            {
+              "name": "pick",
+              "select": {
+                "type": "point",
+                "fields": [
+                  "genre"
+                ]
+              },
+              "bind": "legend"
+            }
+          ]
         }
       ]
     },
@@ -179,9 +195,10 @@
         "type": "text",
         "align": "right",
         "dx": -8,
-        "fontSize": 11,
+        "fontSize": 13.6,
         "fontStyle": "italic",
-        "color": "#2b1600"
+        "color": "#2b1600",
+        "font": "Literata"
       },
       "encoding": {
         "x": {
@@ -250,7 +267,7 @@
         "type": "text",
         "align": "left",
         "dx": 4,
-        "fontSize": 10,
+        "fontSize": 12.5,
         "color": "#666"
       },
       "encoding": {

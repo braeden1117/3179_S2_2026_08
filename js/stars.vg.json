@@ -1,17 +1,23 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
-  "height": 320,
-  "autosize": { "type": "fit-x", "contains": "padding" },
-  "config": { "font": "Open Sans", "view": { "stroke": null } },
+  "height": 500,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "config": {
+    "font": "'Source Sans 3', sans-serif",
+    "view": {
+      "stroke": null
+    }
+  },
   "title": {
     "text": "Who gets rated, and how",
     "subtitle": [
       "Column width = genre's share of all 589 million ratings",
       "Thinnest columns (far right): Graphic Novels and Poetry. Hover for details"
-    ],
-    "color": "#874500",
-    "anchor": "middle"
+    ]
   },
   "data": {
     "url": "data/goodbooks_genres.csv",
@@ -26,87 +32,207 @@
     }
   },
   "transform": [
-    { "filter": "datum.genre != 'Other'" },
+    {
+      "filter": "datum.genre != 'Other'"
+    },
     {
       "aggregate": [
-        { "op": "sum", "field": "ratings_1", "as": "1 star" },
-        { "op": "sum", "field": "ratings_2", "as": "2 stars" },
-        { "op": "sum", "field": "ratings_3", "as": "3 stars" },
-        { "op": "sum", "field": "ratings_4", "as": "4 stars" },
-        { "op": "sum", "field": "ratings_5", "as": "5 stars" }
+        {
+          "op": "sum",
+          "field": "ratings_1",
+          "as": "1 star"
+        },
+        {
+          "op": "sum",
+          "field": "ratings_2",
+          "as": "2 stars"
+        },
+        {
+          "op": "sum",
+          "field": "ratings_3",
+          "as": "3 stars"
+        },
+        {
+          "op": "sum",
+          "field": "ratings_4",
+          "as": "4 stars"
+        },
+        {
+          "op": "sum",
+          "field": "ratings_5",
+          "as": "5 stars"
+        }
       ],
-      "groupby": ["genre"]
+      "groupby": [
+        "genre"
+      ]
     },
     {
-      "fold": ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"],
-      "as": ["stars", "count"]
+      "fold": [
+        "1 star",
+        "2 stars",
+        "3 stars",
+        "4 stars",
+        "5 stars"
+      ],
+      "as": [
+        "stars",
+        "count"
+      ]
     },
-    { "calculate": "toNumber(substring(datum.stars, 0, 1))", "as": "star_n" },
     {
-      "joinaggregate": [{ "op": "sum", "field": "count", "as": "genre_total" }],
-      "groupby": ["genre"]
+      "calculate": "toNumber(substring(datum.stars, 0, 1))",
+      "as": "star_n"
     },
-    { "calculate": "datum.count / datum.genre_total", "as": "share" },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "count",
+          "as": "genre_total"
+        }
+      ],
+      "groupby": [
+        "genre"
+      ]
+    },
+    {
+      "calculate": "datum.count / datum.genre_total",
+      "as": "share"
+    },
     {
       "stack": "count",
       "groupby": [],
-      "as": ["x", "x2"],
+      "as": [
+        "x",
+        "x2"
+      ],
       "offset": "normalize",
       "sort": [
-        { "field": "genre_total", "order": "descending" },
-        { "field": "star_n", "order": "ascending" }
+        {
+          "field": "genre_total",
+          "order": "descending"
+        },
+        {
+          "field": "star_n",
+          "order": "ascending"
+        }
       ]
     },
     {
       "stack": "count",
-      "groupby": ["genre"],
-      "as": ["y", "y2"],
+      "groupby": [
+        "genre"
+      ],
+      "as": [
+        "y",
+        "y2"
+      ],
       "offset": "normalize",
-      "sort": [{ "field": "star_n", "order": "ascending" }]
+      "sort": [
+        {
+          "field": "star_n",
+          "order": "ascending"
+        }
+      ]
     },
     {
       "window": [
-        { "op": "min", "field": "x", "as": "x" },
-        { "op": "max", "field": "x2", "as": "x2" }
+        {
+          "op": "min",
+          "field": "x",
+          "as": "x"
+        },
+        {
+          "op": "max",
+          "field": "x2",
+          "as": "x2"
+        }
       ],
-      "frame": [null, null],
-      "groupby": ["genre"]
+      "frame": [
+        null,
+        null
+      ],
+      "groupby": [
+        "genre"
+      ]
     },
-    { "calculate": "(datum.x + datum.x2) / 2", "as": "x_mid" },
-    { "calculate": "datum.x2 - datum.x", "as": "genre_share" }
+    {
+      "calculate": "(datum.x + datum.x2) / 2",
+      "as": "x_mid"
+    },
+    {
+      "calculate": "datum.x2 - datum.x",
+      "as": "genre_share"
+    }
   ],
   "layer": [
     {
-      "mark": { "type": "rect", "stroke": "white", "strokeWidth": 1 },
+      "mark": {
+        "type": "rect",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
       "encoding": {
-        "x": { "field": "x", "type": "quantitative", "axis": null },
-        "x2": { "field": "x2" },
+        "x": {
+          "field": "x",
+          "type": "quantitative",
+          "axis": null
+        },
+        "x2": {
+          "field": "x2"
+        },
         "y": {
           "field": "y",
           "type": "quantitative",
           "title": "Share of the genre's ratings",
-          "axis": { "format": "%" }
+          "axis": {
+            "format": "%"
+          }
         },
-        "y2": { "field": "y2" },
+        "y2": {
+          "field": "y2"
+        },
         "color": {
           "field": "stars",
           "type": "ordinal",
           "title": null,
           "scale": {
-            "domain": ["1 star", "2 stars", "3 stars", "4 stars", "5 stars"],
-            "range": ["#4d6275", "#9fb0bf", "#e2dcd2", "#cf9f6e", "#874500"]
+            "domain": [
+              "1 star",
+              "2 stars",
+              "3 stars",
+              "4 stars",
+              "5 stars"
+            ],
+            "range": [
+              "#dbe7f3",
+              "#a9c4e2",
+              "#6f9bcc",
+              "#3a6ea9",
+              "#1d4677"
+            ]
           },
-          "legend": { "orient": "top", "direction": "horizontal" }
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal"
+          }
         },
         "tooltip": [
-          { "field": "genre", "title": "Genre" },
+          {
+            "field": "genre",
+            "title": "Genre"
+          },
           {
             "field": "genre_share",
             "type": "quantitative",
             "title": "Share of all ratings",
             "format": ".1%"
           },
-          { "field": "stars", "title": "Rating" },
+          {
+            "field": "stars",
+            "title": "Rating"
+          },
           {
             "field": "share",
             "type": "quantitative",
@@ -117,20 +243,31 @@
       }
     },
     {
-      "transform": [{ "filter": "datum.star_n == 1 && datum.genre_share >= 0.02" }],
+      "transform": [
+        {
+          "filter": "datum.star_n == 1 && datum.genre_share >= 0.02"
+        }
+      ],
       "mark": {
         "type": "text",
         "angle": 270,
         "align": "right",
         "baseline": "middle",
         "dx": -6,
-        "fontSize": 10.5,
+        "fontSize": 13.1,
         "color": "#2b1600"
       },
       "encoding": {
-        "x": { "field": "x_mid", "type": "quantitative" },
-        "y": { "datum": 0 },
-        "text": { "field": "genre" }
+        "x": {
+          "field": "x_mid",
+          "type": "quantitative"
+        },
+        "y": {
+          "datum": 0
+        },
+        "text": {
+          "field": "genre"
+        }
       }
     }
   ]

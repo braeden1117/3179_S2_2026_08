@@ -1,18 +1,20 @@
-
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
-  "height": 360,
-  "autosize": { "type": "fit-x", "contains": "padding" },
-  "config": { "font": "Open Sans", "view": { "stroke": null } },
+  "height": 500,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "config": {
+    "font": "'Source Sans 3', sans-serif",
+    "view": {
+      "stroke": null
+    }
+  },
   "title": {
-    "text": "Even favourite authors have hits and misses",
-    "subtitle": [
-      "The 12 most-rated authors: their lowest- and highest-rated book",
-     "Blue = lowest-rated · brown = highest-rated (no box sets)"
-    ],
-    "color": "#874500",
-    "anchor": "middle"
+    "text": "Rating range of the 12 most-rated authors",
+    "subtitle": "Light blue = lowest-rated · dark blue = highest-rated (no box sets)"
   },
   "data": {
     "url": "data/goodbooks_genres.csv",
@@ -33,62 +35,153 @@
     },
     {
       "aggregate": [
-        { "op": "sum", "field": "ratings_count", "as": "total_ratings" },
-        { "op": "min", "field": "average_rating", "as": "lowest" },
-        { "op": "max", "field": "average_rating", "as": "highest" },
-        { "op": "argmin", "field": "average_rating", "as": "low_book" },
-        { "op": "argmax", "field": "average_rating", "as": "high_book" }
+        {
+          "op": "sum",
+          "field": "ratings_count",
+          "as": "total_ratings"
+        },
+        {
+          "op": "min",
+          "field": "average_rating",
+          "as": "lowest"
+        },
+        {
+          "op": "max",
+          "field": "average_rating",
+          "as": "highest"
+        },
+        {
+          "op": "argmin",
+          "field": "average_rating",
+          "as": "low_book"
+        },
+        {
+          "op": "argmax",
+          "field": "average_rating",
+          "as": "high_book"
+        }
       ],
-      "groupby": ["author"]
+      "groupby": [
+        "author"
+      ]
     },
     {
-      "window": [{ "op": "rank", "as": "rank" }],
-      "sort": [{ "field": "total_ratings", "order": "descending" }]
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "total_ratings",
+          "order": "descending"
+        }
+      ]
     },
-    { "filter": "datum.rank <= 12" },
-    { "calculate": "datum.low_book.title", "as": "low_title" },
-    { "calculate": "datum.high_book.title", "as": "high_title" }
+    {
+      "filter": "datum.rank <= 12"
+    },
+    {
+      "calculate": "datum.low_book.title",
+      "as": "low_title"
+    },
+    {
+      "calculate": "datum.high_book.title",
+      "as": "high_title"
+    }
   ],
   "encoding": {
     "y": {
       "field": "author",
       "type": "nominal",
       "title": null,
-      "sort": { "field": "total_ratings", "op": "max", "order": "descending" }
+      "sort": {
+        "field": "total_ratings",
+        "op": "max",
+        "order": "descending"
+      }
     }
   },
   "layer": [
     {
-      "mark": { "type": "rule", "color": "#c9b8a6", "strokeWidth": 3 },
+      "mark": {
+        "type": "rule",
+        "color": "#c9d6e5",
+        "strokeWidth": 3
+      },
       "encoding": {
         "x": {
           "field": "lowest",
           "type": "quantitative",
           "title": "Average rating (stars)",
-          "scale": { "domain": [3, 5] }
+          "scale": {
+            "domain": [
+              3,
+              5
+            ]
+          }
         },
-        "x2": { "field": "highest" }
+        "x2": {
+          "field": "highest"
+        }
       }
     },
     {
-      "mark": { "type": "circle", "size": 90, "color": "#4d6275", "opacity": 1 },
+      "mark": {
+        "type": "circle",
+        "size": 90,
+        "color": "#7fa6d3",
+        "opacity": 1
+      },
       "encoding": {
-        "x": { "field": "lowest", "type": "quantitative" },
+        "x": {
+          "field": "lowest",
+          "type": "quantitative"
+        },
         "tooltip": [
-          { "field": "author", "title": "Author" },
-          { "field": "low_title", "title": "Lowest-rated book" },
-          { "field": "lowest", "type": "quantitative", "title": "Rating" }
+          {
+            "field": "author",
+            "title": "Author"
+          },
+          {
+            "field": "low_title",
+            "title": "Lowest-rated book"
+          },
+          {
+            "field": "lowest",
+            "type": "quantitative",
+            "title": "Rating"
+          }
         ]
       }
     },
     {
-      "mark": { "type": "circle", "size": 90, "color": "#874500", "opacity": 1 },
+      "mark": {
+        "type": "circle",
+        "size": 90,
+        "color": "#1d4677",
+        "opacity": 1
+      },
       "encoding": {
-        "x": { "field": "highest", "type": "quantitative" },
+        "x": {
+          "field": "highest",
+          "type": "quantitative"
+        },
         "tooltip": [
-          { "field": "author", "title": "Author" },
-          { "field": "high_title", "title": "Highest-rated book" },
-          { "field": "highest", "type": "quantitative", "title": "Rating" }
+          {
+            "field": "author",
+            "title": "Author"
+          },
+          {
+            "field": "high_title",
+            "title": "Highest-rated book"
+          },
+          {
+            "field": "highest",
+            "type": "quantitative",
+            "title": "Rating"
+          }
         ]
       }
     }

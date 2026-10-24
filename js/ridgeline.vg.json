@@ -1,48 +1,250 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "config": { "font": "Open Sans", "view": { "stroke": null } },
+  "config": {
+    "font": "'Source Sans 3', sans-serif",
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFont": "'Source Sans 3', sans-serif",
+      "titleFont": "'Source Sans 3', sans-serif"
+    },
+    "header": {
+      "labelFont": "'Source Sans 3', sans-serif"
+    }
+  },
   "title": {
     "text": "How readers rate each genre",
-    "color": "#874500"
+    "subtitle": "Number on the right: share of the genre's books rated 4 stars or more"
   },
   "data": {
     "url": "data/goodbooks_genres.csv",
-    "format": { "parse": { "average_rating": "number" } }
+    "format": {
+      "parse": {
+        "average_rating": "number"
+      }
+    }
   },
   "transform": [
-    { "filter": "datum.genre != 'Other'" },
-    { "joinaggregate": [{ "op": "median", "field": "average_rating", "as": "median_rating" }], "groupby": ["genre"] },
-    { "density": "average_rating", "groupby": ["genre", "median_rating"], "extent": [3, 5], "as": ["rating", "density"] }
+    {
+      "filter": "datum.genre != 'Other'"
+    },
+    {
+      "calculate": "datum.average_rating >= 4 ? 1 : 0",
+      "as": "above4"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "median",
+          "field": "average_rating",
+          "as": "median_rating"
+        }
+      ],
+      "groupby": [
+        "genre"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "mean",
+          "field": "above4",
+          "as": "share_above4"
+        }
+      ],
+      "groupby": [
+        "genre"
+      ]
+    },
+    {
+      "density": "average_rating",
+      "groupby": [
+        "genre",
+        "median_rating",
+        "share_above4"
+      ],
+      "extent": [
+        3,
+        5
+      ],
+      "as": [
+        "rating",
+        "density"
+      ]
+    }
   ],
   "facet": {
     "row": {
       "field": "genre",
       "title": null,
-      "sort": { "field": "median_rating", "op": "max", "order": "descending" },
-      "header": { "labelAngle": 0, "labelAlign": "left", "labelOrient": "left", "labelPadding": 105, "labelFontSize": 11 }
+      "sort": {
+        "field": "median_rating",
+        "op": "max",
+        "order": "descending"
+      },
+      "header": {
+        "labels": false
+      }
     }
   },
-  "spacing": -20,
+  "spacing": -22.4,
   "spec": {
-    "width": 350,
-    "height": 30,
+    "width": 534,
+    "height": 35,
     "layer": [
       {
-        "mark": { "type": "area", "interpolate": "monotone", "stroke": "white", "strokeWidth": 1, "fillOpacity": 0.9 },
+        "mark": {
+          "type": "area",
+          "interpolate": "monotone",
+          "stroke": "white",
+          "strokeWidth": 1,
+          "fillOpacity": 0.9
+        },
         "encoding": {
-          "x": { "field": "rating", "type": "quantitative", "title": "Average rating (stars)", "scale": { "domain": [3, 5] } },
-          "y": { "field": "density", "type": "quantitative", "axis": null, "scale": { "range": [30, -15] } },
-          "fill": { "field": "median_rating", "type": "quantitative", "legend": null, "scale": { "scheme": "browns" } },
+          "x": {
+            "field": "rating",
+            "type": "quantitative",
+            "title": "Average rating (stars)",
+            "scale": {
+              "domain": [
+                3,
+                5
+              ]
+            }
+          },
+          "y": {
+            "field": "density",
+            "type": "quantitative",
+            "axis": null,
+            "scale": {
+              "range": [
+                35,
+                -17
+              ]
+            }
+          },
+          "fill": {
+            "field": "median_rating",
+            "type": "quantitative",
+            "legend": null,
+            "scale": {
+              "range": [
+                "#a9c4e2",
+                "#1d4677"
+              ],
+              "domain": [
+                3.9,
+                4.25
+              ]
+            }
+          },
           "tooltip": [
-            { "field": "genre", "title": "Genre" },
-            { "field": "median_rating", "type": "quantitative", "title": "Typical (median) rating", "format": ".2f" }
+            {
+              "field": "genre",
+              "title": "Genre"
+            },
+            {
+              "field": "median_rating",
+              "type": "quantitative",
+              "title": "Typical (median) rating",
+              "format": ".2f"
+            }
           ]
         }
       },
       {
-        "mark": { "type": "rule", "strokeDash": [3, 3], "color": "#555" },
-        "encoding": { "x": { "datum": 4 } }
+        "mark": {
+          "type": "rule",
+          "strokeDash": [
+            3,
+            3
+          ],
+          "color": "#555"
+        },
+        "encoding": {
+          "x": {
+            "datum": 4
+          }
+        }
+      },
+      {
+        "transform": [
+          {
+            "aggregate": [
+              {
+                "op": "max",
+                "field": "share_above4",
+                "as": "share_above4"
+              }
+            ]
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 6,
+          "dy": -10,
+          "fontSize": 13.6,
+          "color": "#2b1600"
+        },
+        "encoding": {
+          "x": {
+            "datum": 5
+          },
+          "y": {
+            "datum": 0
+          },
+          "text": {
+            "field": "share_above4",
+            "type": "quantitative",
+            "format": ".0%"
+          }
+        }
+      },
+      {
+        "transform": [
+          {
+            "aggregate": [
+              {
+                "op": "max",
+                "field": "share_above4",
+                "as": "s"
+              }
+            ],
+            "groupby": [
+              "genre"
+            ]
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "bottom",
+          "dx": 2,
+          "dy": -3,
+          "fontSize": 14.8,
+          "font": "'Source Sans 3', sans-serif",
+          "color": "#2b2622"
+        },
+        "encoding": {
+          "x": {
+            "datum": 3
+          },
+          "y": {
+            "datum": 0
+          },
+          "text": {
+            "field": "genre"
+          }
+        }
       }
     ]
+  },
+  "padding": {
+    "top": 3,
+    "bottom": 3,
+    "left": 5,
+    "right": 5
   }
 }

@@ -1,221 +1,364 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-<meta charset="UTF-8">
-  <title>Books & Public Libraries</title>
-  <!-- Import Vega & Vega-Lite) -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Books & Personal Libraries</title>
+
+  <!-- Import Vega & Vega-Lite (does not have to be from CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5.20.2"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.1.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.17.0"></script>
 
-
+  <!-- Import pure.css (grid layout) -->
   <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css"
     integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Google font -->
-  <link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600;7..72,700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Google fonts: Literata (headings, a typeface designed for reading books on screen) and Source Sans 3 (body and charts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,600;0,7..72,700;1,7..72,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
 
   <!-- CSS file -->
   <link rel="stylesheet" type="text/css" href="css/styles.css" media="all">
-
 </head>
 
 <body>
   <div class="container">
 
-    <!-- Title row -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <h1>Books & Personal Libraries</h1>
-        <p>Australians borrowed almost 174 million items from public libraries last year, about six and a half for every person. But what fills our shelves, and how have our tastes changed? This page follows the books from Australia's libraries to the world's most-read titles, and asks whether the books we love most are the ones critics honour.</p>
-      </div>
-    </div>
-
-    <!-- Section 1 heading -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <h2>Australia's shelves</h2>
-        <p>Public libraries are where many Australians find their books. How much we borrow, and how many libraries we have, depends a lot on where we live.</p>
-      </div>
-    </div>
-
-    <!-- Two maps side by side -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div id="au_choropleth" class="chart"></div>
-      </div>
-      <div class="pure-u-1-2">
-        <div id="prop_symb_map" class="chart"></div>
-      </div>
-    </div>
+    <!-- ===================== OPENING ===================== -->
+    <header class="hero">
+      <h1>Books &amp; Personal Libraries</h1>
+      <p class="deck">What Australians borrow, what the world reads, and which writers get remembered</p>
+      <p class="byline">By Braeden Som · October 2026</p>
+    </header>
 
     <div class="pure-g">
       <div class="pure-u-1-1">
-        <p>Queenslanders borrow the most, 7.8 items each a year, while Northern Territory residents borrow the least, 3.7. More branches don't always mean more borrowing: Western Australia has 233 library branches, more than South Australia and Tasmania combined, yet borrows only 5.5 items per person.</p>
+        <p class="lede">In 2023–24 Australians borrowed almost 174 million items from their public libraries, about six and a half for every person. But what is actually on those shelves? Which kinds of books do readers choose, which do they love, and how have those choices changed? This page follows the story in five parts, from Australia's local libraries to the world's most-read books and the writers critics honour.</p>
       </div>
     </div>
 
-
-
-    
-    <!-- Text left, chart right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div class="description description-left">
-          <h2>Collections are going digital</h2>
-          <p>Australia's public libraries now hold almost 48 million items, up from 37 million five years ago. Most of that growth is digital: ebooks and audiobooks rose from 12% to 28% of collections, while physical collections barely changed.</p>
+    <!-- Three headline numbers -->
+    <div class="pure-g stats">
+      <div class="pure-u-1-3">
+        <div class="stat">
+          <span class="stat-number">174 million</span>
+          <span class="stat-label">items borrowed from Australian public libraries in 2023–24</span>
         </div>
       </div>
-      <div class="pure-u-1-2">
-        <div id="collections_bar" class="chart"></div>
+      <div class="pure-u-1-3">
+        <div class="stat">
+          <span class="stat-number">28%</span>
+          <span class="stat-label">of library collections are now ebooks and audiobooks, up from 12% five years earlier</span>
+        </div>
       </div>
-    </div>
-
-
-
-    <!-- Section 2 heading -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <h2>What's on the shelf</h2>
-        <p>The books Australians borrow and buy are largely the same global bestsellers read everywhere else. To see what fills that shared shelf, this section uses the 10,000 most-rated books on Goodreads, the world's largest book-rating website. Each book is given the genre readers most often shelved it under.</p>
-      </div>
-    </div>
-
-    <!-- Chart left, text right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div id="genre_bar" class="chart"></div>
-      </div>
-      <div class="pure-u-1-2">
-        <div class="description description-right">
-          <h2>Fantasy leads the shelf</h2>
-          <p>Fantasy is the most common genre among the world's most-read books, with 1,914 titles, followed closely by romance (1,728) and non-fiction (1,645). Poetry is the rarest, with just 143.</p>
+      <div class="pure-u-1-3">
+        <div class="stat">
+          <span class="stat-number">1</span>
+          <span class="stat-label">Australian winner of the Nobel Prize in Literature in 125 years</span>
         </div>
       </div>
     </div>
 
-
- <!-- Text left, chart right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div class="description description-left">
-          <h2>Some genres are rated more kindly</h2>
-          <p>Each shape shows how a genre's books are spread across star ratings: the higher the peak, the more books scored there. Graphic novels are rated most generously. 82% of them average four stars or more, compared with just 35% of horror books.</p>
+    <!-- ===================== PART 1 ===================== -->
+    <section class="part">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p class="eyebrow">Part 1 of 5</p>
+          <h2>Australia's shelves</h2>
+          <p class="intro">For many Australians, books start at the local library. But how much we borrow, and how many libraries we have nearby, depends a lot on which state we live in.</p>
         </div>
       </div>
-      <div class="pure-u-1-2">
-        <div id="ridgeline" class="chart chart-fixed"></div>
-      </div>
-    </div>
 
- <!-- Chart left, text right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div id="stars" class="chart"></div>
-      </div>
-      <div class="pure-u-1-2">
-        <div class="description description-right">
-          <h2>Fantasy gets a quarter of all ratings</h2>
-          <p>Wider columns are genres that receive more ratings, and the darker the top of a column, the more of those ratings are five stars. Fantasy makes up 19% of the books but attracts 26.5% of all 589 million ratings, and nearly half of them are five stars. Across every genre, only 5–9% of readers give a book one or two stars.</p>
+      <!-- Two maps side by side -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div id="au_choropleth" class="chart"></div>
+        </div>
+        <div class="pure-u-1-2">
+          <div id="prop_symb_map" class="chart"></div>
         </div>
       </div>
-    </div>
 
-     <!-- Section 3 heading -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <h2>How tastes have changed</h2>
-        <p>What we choose to read has shifted over the decades, and it is still shifting today.</p>
-      </div>
-    </div>
-
-    <!-- Full-width heatmap -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <div id="heatmap" class="chart"></div>
-      </div>
-    </div>
-
-    <!-- Text under the heatmap -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <p>Each column shows the genre mix of today's favourite books, grouped by the decade they were first published. Favourites from the 1950s to the 1970s are spread across non-fiction, children's books, science fiction and historical fiction. Since 2000, two genres dominate: in the 2010s, romance (28%) and fantasy (22%) make up half of all favourites. These are books still read today, so older decades show only the books that lasted.</p>
-      </div>
-    </div>
-
- <!-- Text left, chart right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div class="description description-left">
-          <h2>Australians are searching for romance and fantasy</h2>
-          <p>Google searches show the same shift happening in Australia right now. Searches for romance books roughly doubled between 2019 and 2025, and fantasy rose by about 70%, during the years BookTok (book videos on TikTok) drove sales of both genres. The scale runs from 0 to 100, where 100 is the busiest month. Google changed how it collects data in 2022, but the rise continues well after that change.</p>
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p>On the left map, the darker the brown, the more books each person borrows a year. On the right, the bigger the book symbol, the more library branches a state has. Queenslanders borrow the most, 7.8 items each a year, while people in the Northern Territory borrow the least, 3.7. Yet more libraries do not always mean more borrowing: Western Australia has 233 branches, more than South Australia and Tasmania combined, but borrows only 5.5 items per person.</p>
+          <p class="source">Source: Australian Public Libraries Statistical Report 2023–24 (National and State Libraries Australasia and ALIA). State boundaries: Australian Bureau of Statistics.</p>
         </div>
       </div>
-      <div class="pure-u-1-2">
-         <div id="au_trends" class="chart"></div>
-      </div>
-    </div>
 
-    <!-- Section 4 heading -->
-    <div class="pure-g">
-      <div class="pure-u-1-1">
-        <h2>Popular vs loved</h2>
-        <p>You might expect the most popular books to also be the best-loved. They often are not.</p>
-      </div>
-    </div>
-
-    <!-- Chart left, text right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div id="pop_heatmap" class="chart"></div>
-      </div>
-      <div class="pure-u-1-2">
-        <div class="description description-right">
-          <h2>Six in ten books sit between 3.8 and 4.2 stars</h2>
-          <p>Twilight has 3.9 million ratings but only 3.57 stars, while The Complete Calvin and Hobbes has far fewer readers and 4.82. Sydney-born Markus Zusak's The Book Thief manages both: 1.2 million ratings and 4.36 stars.".</p>
+      <!-- Text left, chart right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div class="description description-left">
+            <h3>More of what we borrow is digital</h3>
+            <p>Library collections have also changed. Australia's public libraries now hold almost 48 million items, up from 37 million five years ago, and most of that growth is digital (teal in the chart). Ebooks and audiobooks more than tripled, from 4.3 million to 13.6 million, and grew from 12% to 28% of everything on the shelves. Printed items (grey) grew by only about 6%. Borrowing has followed: in Queensland and the ACT, about four in every ten loans are now ebooks or audiobooks.</p>
+            <p class="bridge">Australians are borrowing more than ever. So what kinds of books fill those shelves?</p>
+          </div>
+        </div>
+        <div class="pure-u-1-2">
+          <div id="collections_bar" class="chart"></div>
+          <p class="source chart-source">Source: Australian Public Libraries Statistical Report 2023–24, five-year national comparison.</p>
         </div>
       </div>
-    </div>
+    </section>
 
-        <!-- Text left, chart right -->
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div class="description description-left">
-          <h2>Even favourite authors have misses</h2>
-          <p>Readers rate the book, not the name. J.K. Rowling's books range from 3.28 stars for The Casual Vacancy, her first novel for adults, to 4.61 for Harry Potter and the Deathly Hallows. Stephen King spans almost as wide a range, while Dan Brown is the most consistent, between 3.60 and 3.85.</p>
+    <!-- ===================== PART 2 ===================== -->
+    <section class="part">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p class="eyebrow">Part 2 of 5</p>
+          <h2>What's on the shelf</h2>
+          <p class="intro">The books Australians borrow and buy are largely the same bestsellers read around the world. To see what fills that shared shelf, this part looks at the 10,000 books with the most ratings on Goodreads, the world's largest book-rating website. Readers there sort books onto "shelves" such as fantasy or romance, and each book here is given the genre readers chose most often.</p>
         </div>
       </div>
-      <div class="pure-u-1-2">
-        <div id="dumbbell" class="chart"></div>
+
+      <!-- Chart left, text right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div id="genre_bar" class="chart"></div>
+          <p class="source chart-source">Source: goodbooks-10k, Goodreads data (Zając, 2017).</p>
+        </div>
+        <div class="pure-u-1-2">
+          <div class="description description-right">
+            <h3>Fantasy leads the shelf</h3>
+            <p>Fantasy is the most common genre among the world's most-read books, with 1,914 titles, followed closely by romance (1,728) and non-fiction (1,645). Poetry is the rarest, with just 143. Together, fantasy and romance make up more than a third of the whole list, and adding non-fiction takes it past half. Fantasy books also draw the most readers each: the typical fantasy book has about 26,000 ratings, more than any other genre. At the other end, poetry, graphic novels and horror together make up fewer than one in ten books.</p>
+            <p>Being common is one thing. Are some genres also better liked?</p>
+          </div>
+        </div>
       </div>
-    </div>
 
+      <!-- Text left, chart right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div class="description description-left">
+            <h3>Some genres are rated more kindly</h3>
+            <p>Each hill shows how a genre's books are spread across star ratings: the higher the hill above a rating, the more books scored there, and the further right it sits, the kinder the ratings. The darker the hill, the higher the genre's typical rating. The dashed line marks 4 stars, and the number beside each hill is the share of that genre's books rated 4 stars or more.</p>
+            <p>Graphic novels are rated most generously, with 82% of them averaging four stars or more. Horror is the harshest, with only 35%. Even so, ratings across all 10,000 books sit in a narrow band: only 339 books average under 3.5 stars, and just 144 reach 4.5 or more. Even horror classics like Frankenstein (3.75) and Dracula (3.98) land just under four stars.</p>
+          </div>
+        </div>
+        <div class="pure-u-1-2">
+          <div id="ridgeline" class="chart chart-fixed"></div>
+          <p class="source chart-source">Source: goodbooks-10k (Goodreads).</p>
+        </div>
+      </div>
 
+      <!-- Chart left, text right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div id="stars" class="chart"></div>
+          <p class="source chart-source">Source: goodbooks-10k (Goodreads), 589 million ratings.</p>
+        </div>
+        <div class="pure-u-1-2">
+          <div class="description description-right">
+            <h3>Fantasy gets a quarter of all the attention</h3>
+            <p>Each column is a genre. The wider the column, the more ratings that genre receives, and the colours show how those ratings split, from 1 star at the bottom (lightest blue) to 5 stars at the top (darkest blue).</p>
+            <p>Fantasy is 19% of the books but receives 26.5% of all 589 million ratings, and nearly half of them are five stars. In every genre, only 5–9% of ratings are one or two stars. Fantasy and romance together receive 43% of all ratings. Across the whole site, nearly three in every four ratings are four or five stars, so a good rating is the norm rather than the exception.</p>
+            <p class="bridge">These are today's favourites. But have readers always reached for the same kinds of books?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PART 3 ===================== -->
+    <section class="part">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p class="eyebrow">Part 3 of 5</p>
+          <h2>How tastes have changed</h2>
+          <p class="intro">Grouping the same 10,000 books by the decade they were first published shows how the mix of favourites has shifted over 70 years.</p>
+        </div>
+      </div>
+
+      <!-- Full-width heatmap -->
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <div id="heatmap" class="chart"></div>
+        </div>
+      </div>
+
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p>Each column is one decade and adds up to 100%, so the darker the purple, the bigger that genre's share of the decade's favourites. Books from the 1950s to the 1970s are spread across many genres: non-fiction, children's books, science fiction and historical fiction. Since 2000, two genres have taken over, and in the 2010s romance (28%) and fantasy (22%) make up half of all favourites. One caution: these are books people still read today, so the older decades only include the books that lasted.</p>
+          <p class="source">Source: goodbooks-10k (Goodreads), books first published 1950–2017.</p>
+        </div>
+      </div>
+
+      <!-- Text left, chart right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div class="description description-left">
+            <h3>Australians are searching for romance and fantasy</h3>
+            <p>Is this shift still happening here? Google searches say yes. Australian searches for romance books (rose) roughly doubled between 2019 and 2025, and searches for fantasy books (gold) rose by about 70%, while the other genres (grey) barely moved. These are the same years BookTok, the book community on TikTok, boosted sales of both genres.</p>
+            <p>Google measures searches on a scale from 0 to 100, where 100 is the busiest month for any of these searches, and each line here is averaged over 12 months to smooth out seasonal spikes. Google changed how it collects data in 2022, but the rise continues well after that change. Click a genre in the legend to follow it on its own.</p>
+            <p class="bridge">Fantasy and romance are what readers pick up. But are the most popular books also the best-loved?</p>
+          </div>
+        </div>
+        <div class="pure-u-1-2">
+          <div id="au_trends" class="chart"></div>
+          <p class="source chart-source">Source: Google Trends, Australia, Books &amp; Literature category, 2011–2026.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PART 4 ===================== -->
+    <section class="part">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p class="eyebrow">Part 4 of 5</p>
+          <h2>Popular versus loved</h2>
+          <p class="intro">You might expect the books with the most readers to also have the best ratings. They often do not.</p>
+        </div>
+      </div>
+
+      <!-- Chart left, text right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div id="pop_heatmap" class="chart"></div>
+          <p class="source chart-source">Source: goodbooks-10k (Goodreads).</p>
+        </div>
+        <div class="pure-u-1-2">
+          <div class="description description-right">
+            <h3>Six in ten books sit between 3.8 and 4.2 stars</h3>
+            <p>Each square groups books with a similar number of ratings (left to right, where each step means ten times more) and a similar star rating (bottom to top). The darker the purple, the more books it holds. Use the menu under the chart to see one genre at a time.</p>
+            <p>If popular books were better loved, the coloured area would climb towards the top right. It does not. Twilight has 3.9 million ratings but only 3.57 stars, while The Complete Calvin and Hobbes has far fewer readers and 4.82 stars. Sydney-born Markus Zusak's The Book Thief manages both: 1.2 million ratings and 4.36 stars. Overall, the 100 most-rated books average 4.07 stars, barely above the 4.00 average of the other 9,900.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text left, chart right -->
+      <div class="pure-g">
+        <div class="pure-u-1-2">
+          <div class="description description-left">
+            <h3>Even favourite authors have misses</h3>
+            <p>Readers rate the book, not the name. Each line runs from an author's lowest-rated book (light blue) to their highest-rated book (dark blue), so a longer line means more uneven books. J.K. Rowling's books range from 3.28 stars for The Casual Vacancy, her first novel for adults, to 4.61 for Harry Potter and the Deathly Hallows. Stephen King spans almost as wide a range, while Dan Brown is the most consistent, between 3.60 and 3.85. Even Jane Austen ranges from 3.56 for her early novella Lady Susan to 4.24 for Pride and Prejudice. In fact, 11 of these 12 authors have at least one book below four stars and at least one above it.</p>
+            <p class="bridge">Readers decide what is popular. But who decides which writers are remembered?</p>
+          </div>
+        </div>
+        <div class="pure-u-1-2">
+          <div id="dumbbell" class="chart"></div>
+          <p class="source chart-source">Source: goodbooks-10k (Goodreads). Box sets and collections excluded.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PART 5 ===================== -->
+    <section class="part">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p class="eyebrow">Part 5 of 5</p>
+          <h2>Who gets remembered</h2>
+          <p class="intro">Readers choose bestsellers, but critics choose prize-winners. The best-known literary award is the Nobel Prize in Literature, given to one writer (occasionally two) almost every year since 1901. Where do the writers it honours come from?</p>
+        </div>
+      </div>
+
+      <!-- Full-width dot map -->
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <div id="nobel_dots" class="chart"></div>
+        </div>
+      </div>
+
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p>Drag the slider under the map to watch the winners build up year by year. The prize has gone overwhelmingly to writers born in Europe. Not one of the 123 winners was born in Australia: Patrick White, Australia's only winner (1973), was born in London to Australian parents.</p>
+          <p class="source">Source: Nobel Prize API (Nobel Prize Outreach). World map: Natural Earth.</p>
+          <p class="bridge">Where winners come from is one side of the story. When in their lives does the prize find them?</p>
+        </div>
+      </div>
+
+      <!-- Full-width timeline -->
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <div id="nobel_timeline" class="chart"></div>
+        </div>
+      </div>
+
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <p>Each bar is one winner's life, from birth to death (or to today), and the dark tick marks the year they won. Winners run in prize order from 1901 at the top to 2026 at the bottom, with women in orange. Most winners are honoured late in life: the typical winner was 67, and 24 of them died within five years of their prize. Where readers reward the books of the moment, the prize looks back over whole careers. The orange bars show how slowly the prize opened up to women. Only 5 of the 40 winners before 1946 were women, just one woman won between 1946 and 1989, and since 1990 13 of 37 winners have been women, including Canada's Anne Carson in 2026. Click "Woman" or "Man" in the legend to show one group at a time.</p>
+          <p class="source">Source: Nobel Prize API (Nobel Prize Outreach), 1901–2026.</p>
+          <p class="bridge">So what does all of this mean for Australian readers?</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONCLUSION ===================== -->
+    <section class="part conclusion">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <h2>What it means for Australian readers</h2>
+          <p>Australians are borrowing more books than ever, and more of them are digital. The books on our shelves, though, are largely global bestsellers, and since 2000 they have narrowed towards fantasy and romance, a shift Australians' own searches show is still growing. Popularity and quality rarely line up: most books sit around four stars however many people read them, and even the best-loved authors have misses. Meanwhile the writers critics honour are mostly European, usually recognised late in life, only recently women, and just once Australian.</p>
+          <p>Next time you borrow a book, there is plenty of room on the shelf for something different, and for more Australian voices.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== ABOUT ===================== -->
+    <section class="part about">
+      <div class="pure-g">
+        <div class="pure-u-1-1">
+          <h2>About this page</h2>
+          <p>Created by Braeden Som for FIT3179 Data Visualisation, Monash University, October 2026.</p>
+
+          <h3>Data sources</h3>
+          <ul>
+            <li>Australian Public Libraries Statistical Report 2023–24. National and State Libraries Australasia and the Australian Library and Information Association (CC BY 4.0). <a href="https://nla.gov.au/nla.obj-3921043747/view" target="_blank">nla.gov.au/nla.obj-3921043747</a></li>
+            <li>State and Territory boundaries, ASGS Edition 3 (2021). Australian Bureau of Statistics (CC BY 4.0). <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs-edition-3" target="_blank">abs.gov.au</a></li>
+            <li>goodbooks-10k. Zygmunt Zając (2017), Goodreads data (CC BY-SA 4.0). <a href="https://github.com/zygmuntz/goodbooks-10k" target="_blank">github.com/zygmuntz/goodbooks-10k</a></li>
+            <li>Google Trends. Australia, Books &amp; Literature category, 2011–2026. <a href="https://trends.google.com" target="_blank">trends.google.com</a></li>
+            <li>Nobel Prize API v2.1. Nobel Prize Outreach (CC0). <a href="https://api.nobelprize.org" target="_blank">api.nobelprize.org</a></li>
+            <li>World countries, Admin 0 (1:110m). Natural Earth (public domain), converted with mapshaper. <a href="https://www.naturalearthdata.com" target="_blank">naturalearthdata.com</a></li>
+          </ul>
+
+          <h3>Notes on the data</h3>
+          <ul>
+            <li>Each Goodreads book is given the most-used of 11 genre "shelves". "Classics" is not used as a genre, because it describes how long a book has lasted rather than what kind of book it is.</li>
+            <li>The Goodreads data is a 2017 snapshot, the most recent openly licensed version, because Goodreads stopped sharing its data in 2020.</li>
+            <li>Four birthplaces missing or wrong in the Nobel data (Albert Camus, Abdulrazak Gurnah, John Galsworthy and Eyvind Johnson) were corrected by hand.</li>
+          </ul>
+
+          <h3>Use of AI</h3>
+          <p>Claude (Anthropic) was used to help find datasets, write and explain Vega-Lite code, and draft and check the text. All data was prepared and checked by the author.</p>
+        </div>
+      </div>
+    </section>
 
   </div> <!-- end container -->
 
   <script type="text/javascript">
-
+    // Shared text sizes for every chart, so all charts match
     const chartText = {
-      title: { fontSize: 18, subtitleFontSize: 14 },
-      axis: { labelFontSize: 12, titleFontSize: 14 },
-      legend: { labelFontSize: 13, titleFontSize: 14, labelLimit: 300, titleLimit: 300 },
-      text: { fontSize: 12 }
+      // Chart titles: small sans-serif in dark grey, so they read as labels
+      // and never compete with the large brown serif page headings
+      title: {
+        font: "'Source Sans 3', sans-serif", fontSize: 20, fontWeight: 700, color: "#3d3630",
+        anchor: "middle", subtitleFont: "'Source Sans 3', sans-serif", subtitleFontSize: 15,
+        subtitleColor: "#7a7067", offset: 14
+      },
+      axis: { labelFontSize: 14, titleFontSize: 16 },
+      legend: { labelFontSize: 15, titleFontSize: 16, labelLimit: 300, titleLimit: 300, symbolSize: 120 },
+      text: { fontSize: 14 },
+      header: { labelFontSize: 14 }
     };
-    vegaEmbed("#au_choropleth", "js/choropleth.vg.json", { actions: false, config: chartText });
-    vegaEmbed("#prop_symb_map", "js/prop_symb_map.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#collections_bar", "js/collections_bar.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#genre_bar", "js/genre_bar.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#ridgeline", "js/ridgeline.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#stars", "js/stars.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#heatmap", "js/heatmap.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#au_trends", "js/au_trends.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#pop_heatmap", "js/pop_heatmap.vg.json", { actions: false, config: chartText  });
-    vegaEmbed("#dumbbell", "js/dumbbell.vg.json", { actions: false, config: chartText  });
+    // Draw the charts only after the web fonts have loaded, so Vega-Lite measures
+    // label widths with the real fonts (otherwise long labels can get clipped)
+    document.fonts.ready.then(function () {
+      vegaEmbed("#au_choropleth", "js/choropleth.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#prop_symb_map", "js/prop_symb_map.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#collections_bar", "js/collections_bar.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#genre_bar", "js/genre_bar.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#ridgeline", "js/ridgeline.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#stars", "js/stars.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#heatmap", "js/heatmap.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#au_trends", "js/au_trends.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#pop_heatmap", "js/pop_heatmap.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#dumbbell", "js/dumbbell.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#nobel_dots", "js/nobel_dots.vg.json", { actions: false, renderer: "svg", config: chartText });
+      vegaEmbed("#nobel_timeline", "js/nobel_timeline.vg.json", { actions: false, renderer: "svg", config: chartText });
+    });
   </script>
 </body>
 

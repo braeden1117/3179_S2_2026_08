@@ -1,0 +1,250 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 500,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "config": {
+    "font": "'Source Sans 3', sans-serif",
+    "view": {
+      "stroke": null
+    }
+  },
+  "title": {
+    "text": "Where Nobel Prize in Literature winners were born",
+    "subtitle": "One dot per laureate, 1901–2026"
+  },
+  "projection": {
+    "type": "equalEarth"
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/world_countries.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_110m_admin_0_countries"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.NAME != 'Antarctica'"
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e8e2d9",
+        "stroke": "white",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "data": {
+        "url": "data/nobel_literature.json",
+        "format": {
+          "type": "json",
+          "property": "laureates"
+        }
+      },
+      "transform": [
+        {
+          "calculate": "datum.knownName.en",
+          "as": "name"
+        },
+        {
+          "calculate": "toNumber(datum.nobelPrizes[0].awardYear)",
+          "as": "year"
+        },
+        {
+          "calculate": "datum.birth.place ? datum.birth.place.cityNow.en : ''",
+          "as": "city"
+        },
+        {
+          "calculate": "datum.birth.place ? datum.birth.place.countryNow.en : ''",
+          "as": "country"
+        },
+        {
+          "calculate": "datum.birth.place ? toNumber(datum.birth.place.cityNow.latitude) : null",
+          "as": "lat"
+        },
+        {
+          "calculate": "datum.birth.place ? toNumber(datum.birth.place.cityNow.longitude) : null",
+          "as": "lon"
+        },
+        {
+          "comment": "Corrections: Camus's coordinates point to Mondovi, Italy (should be Mondovi/Dréan, Algeria); Gurnah has no birthplace; Galsworthy and Johnson have no coordinates",
+          "calculate": "datum.name == 'Albert Camus' ? 36.68 : datum.name == 'Abdulrazak Gurnah' ? -6.17 : datum.name == 'John Galsworthy' ? 51.42 : datum.name == 'Eyvind Johnson' ? 65.83 : datum.lat",
+          "as": "lat"
+        },
+        {
+          "calculate": "datum.name == 'Albert Camus' ? 7.75 : datum.name == 'Abdulrazak Gurnah' ? 39.20 : datum.name == 'John Galsworthy' ? -0.28 : datum.name == 'Eyvind Johnson' ? 21.70 : datum.lon",
+          "as": "lon"
+        },
+        {
+          "calculate": "datum.name == 'Abdulrazak Gurnah' ? 'Zanzibar' : datum.city",
+          "as": "city"
+        },
+        {
+          "calculate": "datum.name == 'Abdulrazak Gurnah' ? 'Tanzania' : datum.country",
+          "as": "country"
+        },
+        {
+          "filter": "isValid(datum.lat) && isValid(datum.lon)"
+        },
+        {
+          "filter": "datum.year <= upTo"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "circle",
+            "size": 55,
+            "color": "#3d3630",
+            "opacity": 0.8,
+            "stroke": "white",
+            "strokeWidth": 0.8
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "tooltip": [
+              {
+                "field": "name",
+                "title": "Laureate"
+              },
+              {
+                "field": "year",
+                "title": "Prize year"
+              },
+              {
+                "field": "city",
+                "title": "Born in"
+              },
+              {
+                "field": "country",
+                "title": "Country (today)"
+              }
+            ]
+          }
+        },
+        {
+          "transform": [
+            {
+              "filter": "datum.name == 'Patrick White'"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "right",
+            "dx": -10,
+            "dy": -14,
+            "fontSize": 14.8,
+            "fontStyle": "italic",
+            "color": "#2b1600",
+            "font": "Literata"
+          },
+          "encoding": {
+            "longitude": {
+              "field": "lon",
+              "type": "quantitative"
+            },
+            "latitude": {
+              "field": "lat",
+              "type": "quantitative"
+            },
+            "text": {
+              "value": "Patrick White, Australia's only winner (born London)"
+            }
+          }
+        },
+        {
+          "transform": [
+            {
+              "aggregate": [
+                {
+                  "op": "count",
+                  "as": "n"
+                }
+              ]
+            },
+            {
+              "calculate": "datum.n + ' winners, 1901–' + upTo",
+              "as": "label"
+            }
+          ],
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "fontSize": 18.2,
+            "fontWeight": "bold",
+            "color": "#3d3630"
+          },
+          "encoding": {
+            "longitude": {
+              "datum": -165
+            },
+            "latitude": {
+              "datum": -38
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 134,
+            "lat": -25,
+            "note": "No laureate born in Australia"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "fontSize": 14.8,
+        "fontStyle": "italic",
+        "color": "#2b2622",
+        "font": "Literata"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note"
+        }
+      }
+    }
+  ],
+  "params": [
+    {
+      "name": "upTo",
+      "value": 2026,
+      "bind": {
+        "input": "range",
+        "min": 1901,
+        "max": 2026,
+        "step": 1,
+        "name": "Show winners up to "
+      }
+    }
+  ]
+}

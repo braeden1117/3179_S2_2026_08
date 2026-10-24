@@ -1,20 +1,35 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": "container",
-  "height": 440,
-  "config": { "font": "Open Sans" },
-  "view": { "stroke": null },
-  "title": {
-    "text": "Library loans per person, 2023–24",
-    "color": "#874500"
+  "height": 500,
+  "config": {
+    "font": "'Source Sans 3', sans-serif"
   },
-  
-  "projection": { "type": "conicEqualArea", "parallels": [-18, -36], "rotate": [-132, 0] },
+  "view": {
+    "stroke": null
+  },
+  "title": {
+    "text": "Library loans per person, 2023–24"
+  },
+  "projection": {
+    "type": "conicEqualArea",
+    "parallels": [
+      -18,
+      -36
+    ],
+    "rotate": [
+      -132,
+      0
+    ]
+  },
   "layer": [
     {
       "data": {
         "url": "data/australia_states.json",
-        "format": { "type": "topojson", "feature": "STE_2021_AUST_GDA2020" }
+        "format": {
+          "type": "topojson",
+          "feature": "STE_2021_AUST_GDA2020"
+        }
       },
       "transform": [
         {
@@ -23,66 +38,192 @@
         {
           "lookup": "properties.STE_NAME21",
           "from": {
-            "data": { "url": "data/au_libraries_2023_24.csv" },
+            "data": {
+              "url": "data/au_libraries_2023_24.csv"
+            },
             "key": "state",
-            "fields": ["abbr", "loans_per_person", "physical_loans_m", "digital_loans_m", "visits_m"]
+            "fields": [
+              "abbr",
+              "loans_per_person",
+              "physical_loans_m",
+              "digital_loans_m",
+              "visits_m"
+            ]
           }
         }
       ],
-      "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 1 },
+      "mark": {
+        "type": "geoshape",
+        "stroke": "white",
+        "strokeWidth": 1
+      },
       "encoding": {
         "color": {
           "field": "loans_per_person",
           "type": "quantitative",
           "title": "Loans per person",
-          "scale": { "scheme": "browns" },
-          "legend": { "orient": "bottom-left", "direction": "horizontal", "gradientLength": 140 }
+          "scale": {
+            "scheme": "browns"
+          },
+          "legend": {
+            "orient": "bottom-left",
+            "direction": "horizontal",
+            "gradientLength": 140
+          }
         },
         "tooltip": [
-          { "field": "properties.STE_NAME21", "title": "State" },
-          { "field": "loans_per_person", "type": "quantitative", "title": "Loans per person" },
-          { "field": "physical_loans_m", "type": "quantitative", "title": "Physical loans (millions)" },
-          { "field": "digital_loans_m", "type": "quantitative", "title": "Digital loans (millions)" },
-          { "field": "visits_m", "type": "quantitative", "title": "Library visits (millions)" }
+          {
+            "field": "properties.STE_NAME21",
+            "title": "State"
+          },
+          {
+            "field": "loans_per_person",
+            "type": "quantitative",
+            "title": "Loans per person"
+          },
+          {
+            "field": "physical_loans_m",
+            "type": "quantitative",
+            "title": "Physical loans (millions)"
+          },
+          {
+            "field": "digital_loans_m",
+            "type": "quantitative",
+            "title": "Digital loans (millions)"
+          },
+          {
+            "field": "visits_m",
+            "type": "quantitative",
+            "title": "Library visits (millions)"
+          }
         ]
-
-        
       }
     },
     {
       "data": {
         "values": [
-          { "abbr": "WA",   "lon": 121.5, "lat": -25.5 },
-          { "abbr": "NT",   "lon": 133.4, "lat": -19.8 },
-          { "abbr": "SA",   "lon": 135.3, "lat": -30.2 },
-          { "abbr": "QLD",  "lon": 144.5, "lat": -22.8 },
-          { "abbr": "NSW",  "lon": 146.6, "lat": -32.2 },
-          { "abbr": "Vic.", "lon": 144.2, "lat": -36.9 },
-          { "abbr": "Tas.", "lon": 146.6, "lat": -42.1 },
-          { "abbr": "ACT",  "lon": 153.6, "lat": -35.4 }
+          {
+            "abbr": "WA",
+            "lon": 121.5,
+            "lat": -25.5
+          },
+          {
+            "abbr": "NT",
+            "lon": 133.4,
+            "lat": -19.8
+          },
+          {
+            "abbr": "SA",
+            "lon": 135.3,
+            "lat": -30.2
+          },
+          {
+            "abbr": "QLD",
+            "lon": 144.5,
+            "lat": -22.8
+          },
+          {
+            "abbr": "NSW",
+            "lon": 146.6,
+            "lat": -32.2
+          },
+          {
+            "abbr": "Vic.",
+            "lon": 144.2,
+            "lat": -36.9
+          },
+          {
+            "abbr": "Tas.",
+            "lon": 146.6,
+            "lat": -43.9
+          },
+          {
+            "abbr": "ACT",
+            "lon": 153.6,
+            "lat": -35.4
+          }
         ]
       },
       "transform": [
         {
           "lookup": "abbr",
           "from": {
-            "data": { "url": "data/au_libraries_2023_24.csv" },
+            "data": {
+              "url": "data/au_libraries_2023_24.csv"
+            },
             "key": "abbr",
-            "fields": ["loans_per_person"]
+            "fields": [
+              "loans_per_person"
+            ]
           }
         },
-        { "calculate": "datum.abbr + ' ' + format(datum.loans_per_person, '.1f')", "as": "label" }
+        {
+          "calculate": "datum.abbr + ' ' + format(datum.loans_per_person, '.1f')",
+          "as": "label"
+        }
       ],
-      "mark": { "type": "text", "fontWeight": "bold", "fontSize": 11 },
+      "mark": {
+        "type": "text",
+        "fontWeight": "bold",
+        "fontSize": 13.6
+      },
       "encoding": {
-        "longitude": { "field": "lon", "type": "quantitative" },
-        "latitude": { "field": "lat", "type": "quantitative" },
-        "text": { "field": "label" },
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        },
         "color": {
-          "condition": { "test": "datum.loans_per_person > 6.2 && datum.abbr != 'ACT'", "value": "white" },
+          "condition": {
+            "test": "datum.loans_per_person > 6.2 && datum.abbr != 'ACT'",
+            "value": "white"
+          },
           "value": "#2b1600"
         }
       }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "lon": 152.3,
+            "lat": -35.4,
+            "lon2": 149.4,
+            "lat2": -35.4
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#2b1600",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "lat",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon2"
+        },
+        "latitude2": {
+          "field": "lat2"
+        }
+      }
     }
-  ]
+  ],
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  }
 }

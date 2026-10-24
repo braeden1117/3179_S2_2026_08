@@ -1,53 +1,186 @@
-/* Page background and font */
+/* ===========================================================
+   Colours used across the page
+   brown  #874500  headings, accents (matches the charts)
+   ink    #2b2622  body text
+   muted  #6f655c  captions, sources, labels
+   rule   #e6ded4  thin divider lines
+   =========================================================== */
+
+/* Page background and fonts */
 body {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
   background-color: #ece8e3;
+  color: #2b2622;
+}
+
+/* Pure.css sets its own font inside the grid, so the font is set on the grid columns too */
+body,
+.pure-g [class*="pure-u"] {
+  font-family: "Source Sans 3", sans-serif;
 }
 
 /* The white "sheet" in the middle of the page */
 .container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 35px 50px 50px;
+  padding: 44px 56px 48px;
   background-color: white;
 }
 
+/* ---------- Type scale: 50 / 34 / 24 / 18 / 14 px ---------- */
 
-
-/* Headings */
-h1 {
+h1, h2, h3 {
+  font-family: "Literata", Georgia, serif;
   color: #874500;
-  text-align: center;
   margin-top: 0;
-  font-size: 48px;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: 50px;
+  margin-bottom: 12px;
 }
 
 h2 {
-  color: #874500;
-  margin-top: 0;
-  font-size: 32px;
+  font-size: 34px;
+  margin-bottom: 14px;
 }
 
-/* Headings beside a chart are a step smaller than section headings */
-.description h2 {
-  font-size: 26px;
+/* Headings beside a chart are one step below part headings */
+h3 {
+  font-size: 28px;
+  margin-bottom: 12px;
 }
 
-/* Body text */
+/* Body text: comfortable size, spacing and line length */
 p {
-  line-height: 1.6;
-  color: #333;
-  font-size: 19px;
+  font-size: 20px;
+  line-height: 1.65;
+  color: #2b2622;
+  margin: 0 0 14px;
 }
 
-body,
-.pure-g [class*="pure-u"] {
-  font-family: "Open Sans", sans-serif;
+/* ---------- Opening ---------- */
+
+.hero {
+  text-align: center;
+  margin-bottom: 24px;
 }
-/* Space between each row of the page */
+
+.hero p {
+  max-width: none;
+}
+
+.deck {
+  font-family: "Literata", Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  color: #6f655c;
+  margin-bottom: 8px;
+}
+
+.byline {
+  font-size: 14px;
+  color: #6f655c;
+  letter-spacing: 0.02em;
+}
+
+/* The opening paragraph is slightly larger than body text */
+.lede {
+  font-size: 21px;
+}
+
+/* Three headline numbers */
+.stats {
+  border-top: 1px solid #e6ded4;
+  padding-top: 24px;
+  margin-bottom: 0;
+}
+
+.stat {
+  padding-right: 28px;
+}
+
+.stat-number {
+  display: block;
+  font-family: "Literata", Georgia, serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1.1;
+  color: #874500;
+  margin-bottom: 6px;
+}
+
+.stat-label {
+  display: block;
+  font-size: 16px;
+  line-height: 1.45;
+  color: #6f655c;
+}
+
+/* ---------- Parts of the story ---------- */
+
+/* Each part starts with a thin line and generous space, so the five parts read as chapters */
+.part {
+  border-top: 1px solid #e6ded4;
+  padding-top: 36px;
+  margin-top: 36px;
+}
+
+/* "Part 1 of 5" label above each part heading */
+.eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6f655c;
+  margin-bottom: 6px;
+}
+
+/* The opening paragraph of each part */
+.intro {
+  font-size: 20px;
+}
+
+/* "How to read this chart" guidance */
+.read-me {
+  font-size: 16px;
+  color: #4a423b;
+  background-color: #f7f3ee;
+  border-left: 3px solid #d4b08c;
+  padding: 10px 14px;
+}
+
+.read-me b {
+  color: #2b2622;
+}
+
+/* The sentence that leads into the next part */
+.bridge {
+  font-family: "Literata", Georgia, serif;
+  font-style: italic;
+  font-size: 19px;
+  color: #874500;
+  margin-top: 16px;
+}
+
+/* Source line under each chart */
+.source {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #6f655c;
+  margin-top: 4px;
+}
+
+.chart-source {
+  margin-top: 8px;
+}
+
+/* ---------- Grid rows and charts ---------- */
+
+/* Space between rows inside a part */
 .pure-g {
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
 /* Charts fill their column */
@@ -59,13 +192,18 @@ body,
   padding: 0;
 }
 
-/* Left-column charts keep a gap on their right; right-column charts keep a gap on their left */
-.pure-u-1-2:first-child .chart {
-  padding-right: 20px;
+/* Left-column items keep a gap on their right, right-column items keep a gap on their left,
+   so the outer edges of every chart and paragraph line up with the page margins */
+/* The gap is put on the column (not the chart), because Vega-Lite measures the chart
+   element's full width including padding, which made charts spill past the margins */
+.pure-u-1-2:first-child:has(.chart) {
+  padding-right: 24px;
+  box-sizing: border-box;
 }
 
-.pure-u-1-2:last-child .chart {
-  padding-left: 20px;
+.pure-u-1-2:last-child:has(.chart) {
+  padding-left: 24px;
+  box-sizing: border-box;
 }
 
 /* Fixed-width charts (the ridgeline) sit against the right edge of their column */
@@ -78,15 +216,105 @@ body,
   width: auto;
 }
 
-/* Text columns next to a chart */
+/* Text columns next to a chart: the heading lines up with the chart's title */
+.description {
+  padding-top: 0;
+}
+
+/* The heading beside a chart starts level with the chart's title */
+.description h3 {
+  margin-top: -3px;
+}
+
 .description-left {
-  padding-right: 20px;
+  padding-right: 24px;
 }
 
 .description-right {
-  padding-left: 20px;
+  padding-left: 24px;
 }
 
-h1, h2 {
-  font-family: "Literata", Georgia, serif;
+/* ---------- Conclusion and About ---------- */
+
+.conclusion p {
+  font-size: 20px;
+}
+
+.about h3 {
+  font-size: 20px;
+  margin-top: 28px;
+}
+
+.about p,
+.about li {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4a423b;
+}
+
+.about ul {
+  padding-left: 20px;
+  margin: 0;
+  max-width: 80ch;
+}
+
+.about li {
+  margin-bottom: 8px;
+}
+
+.about a {
+  color: #874500;
+}
+
+/* The last row of each part needs no extra gap before the next divider */
+.part > .pure-g:last-child {
+  margin-bottom: 0;
+}
+
+/* Paragraphs in the two-column text rows fill their column */
+.description p {
+  max-width: none;
+}
+
+/* ---------- Chart controls (sliders and menus under charts) ---------- */
+
+.vega-bindings {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #2b2622;
+}
+
+.vega-bind {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.vega-bind-name {
+  font-weight: 600;
+  color: #874500;
+}
+
+.vega-bind select {
+  font-family: "Source Sans 3", sans-serif;
+  font-size: 15px;
+  padding: 4px 8px;
+  border: 1px solid #d4b08c;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.vega-bind input[type="range"] {
+  width: 260px;
+  accent-color: #874500;
+}
+
+/* Rows that pair text with a chart: centre the text against the chart, so any
+   leftover space is shared above and below instead of piling up under the text */
+.pure-g:has(.description) {
+  align-items: flex-start;
+}
+
+.description p {
+  font-size: 21px;
 }
